@@ -1,32 +1,50 @@
--- Criar o banco de dados (se já existir, comente a linha abaixo)
-CREATE DATABASE rh_empresa;
+CREATE DATABASE db_generation_game_online;
+USE db_generation_game_online;
 
--- Usar o banco de dados
-USE rh_empresa;
-
--- Criar a tabela (se já existir, apague antes ou comente essa parte)
-CREATE TABLE colaboradores (
+CREATE TABLE tb_classes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    cargo VARCHAR(50),
-    salario DECIMAL(10,2),
-    data_admissao DATE,
-    departamento VARCHAR(50)
+    nome VARCHAR(50) NOT NULL,
+    habilidade_especial VARCHAR(100) NOT NULL
 );
 
--- Inserir os registros
-INSERT INTO colaboradores (nome, cargo, salario, data_admissao, departamento) VALUES
-('Ana', 'Analista', 3000.00, '2022-01-10', 'Financeiro'),
-('Carlos', 'Assistente', 1800.00, '2023-05-20', 'RH'),
-('Mariana', 'Coordenadora', 4500.00, '2021-09-15', 'Vendas'),
-('Pedro', 'Estagiário', 1200.00, '2024-02-01', 'TI'),
-('João', 'Analista', 2500.00, '2022-11-30', 'TI');
+CREATE TABLE tb_personagens (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    poder_ataque INT NOT NULL,
+    poder_defesa INT NOT NULL,
+    nivel INT NOT NULL,
+    id_classe INT,
+    FOREIGN KEY (id_classe) REFERENCES tb_classes(id)
+);
 
--- Select de colaboradores com salário maior que 2000
-SELECT * FROM colaboradores WHERE salario > 2000;
+INSERT INTO tb_classes (nome, habilidade_especial) VALUES
+('Guerreiro', 'Ataque Pesado'),
+('Arqueiro', 'Tiro Preciso'),
+('Mago', 'Bola de Fogo'),
+('Ladino', 'Ataque Rápido'),
+('Paladino', 'Cura Divina');
 
--- Select de colaboradores com salário menor que 2000
-SELECT * FROM colaboradores WHERE salario < 2000;
+INSERT INTO tb_personagens (nome, poder_ataque, poder_defesa, nivel, id_classe) VALUES
+('Thor', 3000, 1500, 10, 1),
+('Legolas', 2200, 1200, 8, 2),
+('Gandalf', 2800, 800, 12, 3),
+('Shadow', 1800, 900, 7, 4),
+('Arthur', 2500, 2000, 9, 1),
+('Robin', 2100, 1000, 6, 2),
+('Merlin', 2600, 1100, 11, 3),
+('Luna', 2300, 1300, 8, 5);
 
--- Atualizar o salário de Carlos (usando o ID correto)
-UPDATE colaboradores SET salario = 1900.00 WHERE id = 2;
+SELECT * FROM tb_personagens WHERE poder_ataque > 2000;
+
+SELECT * FROM tb_personagens WHERE poder_defesa BETWEEN 1000 AND 2000;
+
+SELECT * FROM tb_personagens WHERE nome LIKE '%C%';
+
+SELECT tb_personagens.nome, tb_personagens.poder_ataque, tb_classes.nome AS classe
+FROM tb_personagens
+INNER JOIN tb_classes ON tb_personagens.id_classe = tb_classes.id;
+
+SELECT tb_personagens.nome, tb_personagens.poder_ataque, tb_classes.nome AS classe
+FROM tb_personagens
+INNER JOIN tb_classes ON tb_personagens.id_classe = tb_classes.id
+WHERE tb_classes.nome = 'Arqueiro';

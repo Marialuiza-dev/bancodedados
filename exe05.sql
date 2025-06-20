@@ -1,5 +1,5 @@
-CREATE DATABASE db_farmacia_bem_estar;
-USE db_farmacia_bem_estar;
+CREATE DATABASE db_construindo_vidas;
+USE db_construindo_vidas;
 
 CREATE TABLE tb_categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,25 +17,28 @@ CREATE TABLE tb_produtos (
 );
 
 INSERT INTO tb_categorias (nome, descricao) VALUES
-('Medicamentos', 'Remédios e fármacos'),
-('Cosméticos', 'Produtos de beleza'),
-('Higiene', 'Produtos de higiene pessoal'),
-('Vitaminas', 'Suplementos vitamínicos'),
-('Infantil', 'Produtos para bebês e crianças');
+('Hidráulica', 'Materiais para encanamento'),
+('Elétrica', 'Materiais elétricos'),
+('Pisos', 'Revestimentos'),
+('Tintas', 'Produtos para pintura'),
+('Ferramentas', 'Ferramentas em geral');
 
 INSERT INTO tb_produtos (nome, descricao, preco, id_categoria) VALUES
-('Dipirona', 'Analgésico', 10.00, 1),
-('Shampoo', 'Higiene capilar', 25.00, 3),
-('Protetor Solar', 'FPS 50', 60.00, 2),
-('Vitamina C', 'Suplemento', 35.00, 4),
-('Pomada para Assadura', 'Uso infantil', 20.00, 5),
-('Ibuprofeno', 'Anti-inflamatório', 15.00, 1),
-('Sabonete Líquido', 'Higiene corporal', 12.00, 3),
-('Hidratante Corporal', 'Pele seca', 55.00, 2);
+('Canos PVC', 'Tubo de água', 30.00, 1),
+('Fio Elétrico', 'Fio 10mm', 80.00, 2),
+('Porcelanato', 'Revestimento de piso', 150.00, 3),
+('Tinta Acrílica', '18 litros', 120.00, 4),
+('Parafusadeira', 'Ferramenta elétrica', 300.00, 5),
+('Interruptor', 'Interruptor simples', 25.00, 2),
+('Massa Corrida', 'Para acabamento de parede', 70.00, 4),
+('Chave de Fenda', 'Ferramenta manual', 40.00, 5);
 
-SELECT * FROM tb_produtos WHERE preco > 50.00;
-SELECT * FROM tb_produtos WHERE preco BETWEEN 5.00 AND 60.00;
+SELECT * FROM tb_produtos WHERE preco > 100.00;
+
+SELECT * FROM tb_produtos WHERE preco BETWEEN 70.00 AND 150.00;
+
 SELECT * FROM tb_produtos WHERE nome LIKE '%C%';
+
 SELECT tb_produtos.nome AS Produto, tb_categorias.nome AS Categoria
 FROM tb_produtos
 INNER JOIN tb_categorias ON tb_produtos.id_categoria = tb_categorias.id;
@@ -43,4 +46,4 @@ INNER JOIN tb_categorias ON tb_produtos.id_categoria = tb_categorias.id;
 SELECT tb_produtos.nome AS Produto, tb_categorias.nome AS Categoria
 FROM tb_produtos
 INNER JOIN tb_categorias ON tb_produtos.id_categoria = tb_categorias.id
-WHERE tb_categorias.nome = 'Cosméticos';
+WHERE tb_categorias.nome = 'Hidráulica';

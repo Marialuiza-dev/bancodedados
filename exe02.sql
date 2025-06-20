@@ -1,39 +1,47 @@
--- Apagar o banco de dados se já existir
-DROP DATABASE IF EXISTS ecommerce;
+CREATE DATABASE db_pizzaria_legal;
+USE db_pizzaria_legal;
 
--- Criar o banco de dados
-CREATE DATABASE ecommerce;
-USE ecommerce;
-
--- Criar a tabela produtos
-CREATE TABLE produtos (
+CREATE TABLE tb_categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    descricao VARCHAR(255),
-    preco DECIMAL(10,2),
-    estoque INT,
-    categoria VARCHAR(50)
+    nome VARCHAR(50) NOT NULL,
+    descricao VARCHAR(100)
 );
 
--- Inserir os produtos
-INSERT INTO produtos (nome, descricao, preco, estoque, categoria) VALUES
-('Notebook', 'Notebook com 16GB RAM', 3500.00, 10, 'Informática'),
-('Mouse', 'Mouse sem fio', 120.00, 50, 'Periféricos'),
-('Teclado', 'Teclado mecânico', 600.00, 30, 'Periféricos'),
-('Monitor', 'Monitor 24 polegadas', 900.00, 20, 'Informática'),
-('Cadeira Gamer', 'Cadeira confortável', 1500.00, 5, 'Móveis'),
-('Pen Drive', 'Pen Drive 64GB', 80.00, 100, 'Armazenamento'),
-('HD Externo', '1TB de armazenamento', 400.00, 15, 'Armazenamento'),
-('Smartphone', 'Smartphone 128GB', 2500.00, 8, 'Celulares');
+CREATE TABLE tb_pizzas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    descricao VARCHAR(100),
+    valor DECIMAL(6,2) NOT NULL,
+    id_categoria INT,
+    FOREIGN KEY (id_categoria) REFERENCES tb_categorias(id)
+);
 
--- Selecionar produtos com preço acima de 500
-SELECT * FROM produtos WHERE preco > 500;
+INSERT INTO tb_categorias (nome, descricao) VALUES
+('Tradicional', 'Sabores tradicionais'),
+('Especial', 'Sabores exclusivos da casa'),
+('Vegetariana', 'Sem carne, só vegetais'),
+('Doce', 'Pizzas de sobremesa'),
+('Premium', 'Ingredientes nobres');
 
--- Selecionar produtos com preço abaixo de 500
-SELECT * FROM produtos WHERE preco < 500;
+INSERT INTO tb_pizzas (nome, descricao, valor, id_categoria) VALUES
+('Mussarela', 'Queijo e molho', 40.00, 1),
+('Calabresa', 'Calabresa com cebola', 45.00, 1),
+('Quatro Queijos', 'Mistura de queijos', 55.00, 2),
+('Vegetariana', 'Legumes grelhados', 50.00, 3),
+('Brigadeiro', 'Chocolate com granulado', 60.00, 4),
+('Romeu e Julieta', 'Goiabada e queijo', 48.00, 4),
+('Frango com Catupiry', 'Frango desfiado e Catupiry', 52.00, 2),
+('Portuguesa', 'Presunto, ovos e ervilha', 58.00, 1);
 
--- Atualizar o preço do Teclado para 550.00
-SELECT id, nome FROM produtos WHERE nome = 'Teclado';
+SELECT * FROM tb_pizzas WHERE valor > 45.00;
+SELECT * FROM tb_pizzas WHERE valor BETWEEN 50.00 AND 100.00;
+SELECT * FROM tb_pizzas WHERE nome LIKE '%M%';
 
--- Consultar novamente o Teclado para conferir a atualização
-SELECT * FROM produtos WHERE nome = 'Teclado';
+SELECT tb_pizzas.nome AS Pizza, tb_categorias.nome AS Categoria
+FROM tb_pizzas
+INNER JOIN tb_categorias ON tb_pizzas.id_categoria = tb_categorias.id;
+
+SELECT tb_pizzas.nome AS Pizza, tb_categorias.nome AS Categoria
+FROM tb_pizzas
+INNER JOIN tb_categorias ON tb_pizzas.id_categoria = tb_categorias.id
+WHERE tb_categorias.nome = 'Doce';
